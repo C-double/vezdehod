@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>УРАГАН — там, где дороги кончаются</title>
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/swiper@9/swiper-bundle.min.css">
+<style>
+  :root{
+    --graphite:#1A1A1A;--metal:#3B342E;--swamp:#4A503A;--mud:#2F2B25;
+    --yellow:#F2C94C;--cta-red:#D22F27;--cta-green:#2F9E44;
+    --text:#F2F2F2;--muted:#C7C7C7;--line:#3D3D3D;
+  }
+  *{box-sizing:border-box} html,body{margin:0;background:var(--graphite);color:var(--text);font:400 16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  img{max-width:100%;height:auto;display:block}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 16px}
+  h1,h2,h3{font-family:Oswald,Impact,system-ui;letter-spacing:.3px;margin:0 0 .5rem}
+  h1{font-size:32px;line-height:1.1}
+  h2{font-size:24px}
+  .section{padding:28px 0;border-top:1px solid var(--line)}
+  .badge{display:inline-block;background:#0f0f0f;border:1px solid var(--line);border-radius:8px;padding:4px 8px;color:var(--yellow);font:600 12px/1 Inter;margin-left:6px}
+
+  /* BUTTONS (лампы) */
+  .btn{display:inline-flex;align-items:center;gap:.55rem;padding:14px 18px;border-radius:14px;
+       font:700 16px Oswald,system-ui;text-transform:uppercase;letter-spacing:.3px;position:relative;isolation:isolate;border:0}
+  .btn--red{background:var(--cta-red);box-shadow:0 0 24px rgba(210,47,39,.45), inset 0 2px 8px rgba(255,255,255,.2)}
+  .btn--green{background:var(--cta-green);box-shadow:0 0 24px rgba(47,158,68,.45), inset 0 2px 8px rgba(255,255,255,.2)}
+  .btn::before{content:"";width:12px;height:12px;border-radius:50%;background:#fff;opacity:.9;box-shadow:0 0 14px #fff;display:inline-block}
+
+  /* HAZARD stripe band */
+  .hazard{--h:64px; position:relative;background:
+     repeating-linear-gradient(25deg,var(--yellow) 0 24px, #0e0e0e 24px 48px);
+     border:2px solid var(--line);border-radius:10px;min-height:var(--h);display:flex;align-items:center;justify-content:center;padding:10px 14px}
+  .hazard__title{font:700 18px Oswald;color:#0b0b0b;text-align:center}
+
+  /* HEADER */
+  header .brand{display:flex;align-items:center;gap:10px}
+  header .brand img{width:44px;height:44px;object-fit:contain}
+
+  /* HERO */
+  .hero{padding:18px 0 10px;position:relative}
+  .hero__media{position:relative;aspect-ratio:16/10;background:#111;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .hero__tilt{width:100%;height:100%;background:url('YOUR_HERO_IMAGE.jpg') center/cover no-repeat;transform-style:preserve-3d}
+  .hero__play{position:absolute;inset:auto auto 12px 12px;display:inline-flex;align-items:center;gap:8px;
+             background:rgba(0,0,0,.55);backdrop-filter:blur(6px);border:1px solid var(--line);padding:10px 12px;border-radius:999px}
+  .hero__play i{width:0;height:0;border-left:12px solid var(--yellow);border-top:7px solid transparent;border-bottom:7px solid transparent}
+  .utps{display:flex;gap:8px;flex-wrap:wrap;margin:.75rem 0}
+  .utp{background:#0d0d0d;border:1px solid var(--line);padding:6px 10px;border-radius:8px;color:var(--muted);font-size:13px}
+
+  /* CARDS carousel */
+  .cards{--gap:16px}
+  .swiper{padding:6px 2px 20px}
+  .swiper-slide{width:auto}
+  .card{background:var(--mud);border:1px solid var(--line);border-radius:16px;padding:14px;width:100%;max-width:343px}
+  .card__photo{position:relative;border-radius:12px;overflow:hidden;border:1px dashed #4a4a4a;aspect-ratio:16/9;background:#0c0c0c}
+  .card__title{font:700 22px Oswald;margin:.6rem 0}
+  .spec{display:flex;gap:8px;color:var(--muted);font-size:14px}
+  .spec::before{content:"•";color:var(--yellow)}
+  .price{margin:.6rem 0 .2rem;font:700 20px Oswald}
+  .credit{display:inline-block;border:1px solid var(--line);border-radius:6px;background:#111;padding:3px 8px;color:var(--yellow);font-size:13px}
+  .card .btn{width:100%;justify-content:center;margin-top:10px}
+
+  /* TTX grid */
+  .ttx{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .ttx__item{background:#121212;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+  .ttx__num{font:700 20px Oswald;color:var(--yellow)}
+
+  /* GALLERY */
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .gallery div{aspect-ratio:16/11;background:#0e0e0e;border:1px solid var(--line);border-radius:10px}
+
+  /* REVIEWS (Авито-вайб) */
+  .reviews{display:grid;gap:10px}
+  .review{background:#111;border:1px solid var(--line);border-radius:12px;padding:10px}
+  .review__head{display:flex;align-items:center;gap:10px;border-bottom:1px solid #2a2a2a;padding-bottom:8px;margin-bottom:8px}
+  .avatar{width:36px;height:36px;border-radius:50%;background:#666}
+  .stars{color:var(--yellow);letter-spacing:2px}
+
+  /* CTA FORM */
+  .form{background:#101010;border:1px solid var(--line);border-radius:16px;padding:14px}
+  .field{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+  .input{background:#0b0b0b;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text)}
+
+  /* STICKY BAR (mobile) */
+  .sticky{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);z-index:30;width:min(540px, calc(100% - 20px));display:flex;gap:10px}
+  .sticky .btn{flex:1;justify-content:center}
+
+  /* POPUP */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal__box{background:#0e0e0e;border:1px solid var(--line);border-radius:16px;max-width:920px;width:100%;padding:16px;position:relative}
+  .modal__grid{display:grid;gap:12px}
+  @media(min-width:820px){ .modal__grid{grid-template-columns:1.15fr .85fr} }
+  .close{position:absolute;top:10px;right:14px;background:#151515;border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:#fff;cursor:pointer}
+
+  /* FOOTER */
+  footer{color:var(--muted);font-size:13px}
+
+  /* Desktop tweaks */
+  @media(min-width:1024px){
+    h1{font-size:44px}
+    .hero{padding-top:28px}
+    .gallery{grid-template-columns:repeat(3,1fr)}
+    .ttx{grid-template-columns:repeat(4,1fr)}
+    .sticky{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- Sticky CTA (mobile-first) -->
+<div class="sticky">
+  <a class="btn btn--green" href="#lead">Позвонить</a>
+  <a class="btn btn--red" href="#lead">Забронировать</a>
+</div>
+
+<header class="wrap section" style="border-top:0">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div class="brand">
+      <img src="YOUR_LOGO.png" alt="Ураган">
+      <strong>ВЕЗДЕХОДЫ «УРАГАН»</strong>
+    </div>
+    <a class="btn btn--green" href="#lead">Заказать звонок</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="section hero">
+    <h1>УРАГАН — там, где дороги кончаются</h1>
+    <p style="color:var(--muted);margin:.35rem 0 1rem">
+      Полноприводный плавающий вездеход низкого давления. Для охоты, рыбалки и экспедиций.
+    </p>
+    <div class="hero__media" id="tilt">
+      <div class="hero__tilt"></div>
+      <a class="hero__play" href="YOUR_OVERVIEW_VIDEO_URL" target="_blank" rel="noopener">
+        <i></i><span>Смотреть обзор</span>
+      </a>
+    </div>
+    <div class="utps">
+      <div class="utp">Собственное производство (Вологда)</div>
+      <div class="utp">Гарантия 1 год</div>
+      <div class="utp">Доставка по РФ</div>
+    </div>
+    <a class="btn btn--red" href="#lead">Забронировать тест-драйв</a>
+  </section>
+
+  <!-- СИЛА и НАДЁЖНОСТЬ -->
+  <section class="section">
+    <h2>УРАГАН — проверен бездорожьем</h2>
+    <ul style="padding-left:18px;color:var(--muted);margin:.5rem 0 0">
+      <li>Идёт по болоту, снегу и тундре</li>
+      <li>Усиленная рама и простая конструкция</li>
+      <li>Доступные запчасти, обслуживание</li>
+      <li>Плавает и берёт броды</li>
+    </ul>
+  </section>
+
+  <!-- КАРУСЕЛЬ КАРТОЧЕК МОДЕЛЕЙ -->
+  <section class="section cards">
+    <h2 style="display:flex;align-items:center;gap:8px">Модели <span class="badge">есть кредит</span></h2>
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <!-- CARD 1 -->
+        <article class="swiper-slide card">
+          <div class="card__photo">
+            <img src="MODEL_URAGAN.jpg" alt="Ураган" style="width:100%;height:100%;object-fit:cover">
+          </div>
+          <h3 class="card__title">УРАГАН</h3>
+          <div class="spec">Двигатель Lifan</div>
+          <div class="spec">Скорость до 45 км/ч (суша)</div>
+          <div class="spec">Плавает до 5 км/ч</div>
+          <div class="spec">Грузоподъёмность до 500 кг</div>
+          <div class="price">от 330 000 ₽ <span class="credit">в кредит от 12 500 ₽/мес</span></div>
+          <button class="btn btn--green" data-modal="#modelUragan">⚡ Хочу этот Ураган</button>
+        </article>
+        <!-- CARD 2 -->
+        <article class="swiper-slide card">
+          <div class="card__photo">
+            <img src="MODEL_URAGAN_COMFORT.jpg" alt="Ураган Comfort" style="width:100%;height:100%;object-fit:cover">
+          </div>
+          <h3 class="card__title">УРАГАН Comfort</h3>
+          <div class="spec">Усиленная комплектация</div>
+          <div class="spec">Фары, улучшенное сиденье</div>
+          <div class="spec">Повышенный клиренс</div>
+          <div class="spec">До 3 человек</div>
+          <div class="price">от 380 000 ₽ <span class="credit">в кредит от 14 200 ₽/мес</span></div>
+          <button class="btn btn--red" data-modal="#modelComfort">🔥 Посмотреть в деле</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ТТХ (цифры) -->
+  <section class="section">
+    <h2>Технические характеристики</h2>
+    <div class="ttx">
+      <div class="ttx__item"><div class="ttx__num">45 км/ч</div><div>Скорость по суше</div></div>
+      <div class="ttx__item"><div class="ttx__num">5 км/ч</div><div>На воде</div></div>
+      <div class="ttx__item"><div class="ttx__num">500 кг</div><div>Грузоподъёмность</div></div>
+      <div class="ttx__item"><div class="ttx__num">4×4</div><div>Привод</div></div>
+    </div>
+  </section>
+
+  <!-- ГАЛЕРЕЯ -->
+  <section class="section">
+    <h2>Ураган в деле</h2>
+    <div class="gallery">
+      <div style="background-image:url('GALLERY_1.jpg');background-size:cover;background-position:center"></div>
+      <div style="background-image:url('GALLERY_2.jpg');background-size:cover;background-position:center"></div>
+      <div style="background-image:url('GALLERY_3.jpg');background-size:cover;background-position:center"></div>
+      <div style="background-image:url('GALLERY_4.jpg');background-size:cover;background-position:center"></div>
+      <div style="background-image:url('GALLERY_5.jpg');background-size:cover;background-position:center"></div>
+      <div style="background-image:url('GALLERY_6.jpg');background-size:cover;background-position:center"></div>
+    </div>
+  </section>
+
+  <!-- ОТЗЫВЫ (Авито-стиль) -->
+  <section class="section">
+    <h2>Отзывы владельцев</h2>
+    <div class="reviews">
+      <article class="review">
+        <div class="review__head">
+          <div class="avatar"></div>
+          <div>
+            <div style="font-weight:700">Пользователь Авито</div>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p style="color:var(--muted)">Брал для охоты — проходимость зверь! Доставка вовремя, по болоту идёт уверенно.</p>
+        <small style="color:#888">Опубликовано: 12.09.2025</small>
+      </article>
+      <article class="review">
+        <div class="review__head">
+          <div class="avatar"></div>
+          <div>
+            <div style="font-weight:700">Покупатель</div>
+            <div class="stars">★★★★★</div>
+          </div>
+        </div>
+        <p style="color:var(--muted)">На рыбалку теперь только на нём — застрять невозможно. Техника простая и надёжная.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- О КОМПАНИИ -->
+  <section class="section">
+    <h2>Мы делаем УРАГАНы сами</h2>
+    <ul style="padding-left:18px;color:var(--muted);margin:.5rem 0 0">
+      <li>Собственное производство — г. Вологда</li>
+      <li>Индивидуальные заказы</li>
+      <li>Гарантия 1 год</li>
+      <li>Оплата при получении</li>
+      <li>Доставка по всей России</li>
+      <li>Кредит и рассрочка</li>
+      <li>Интернет-магазин запчастей</li>
+      <li>🎁 Бонус при заказе • Скидки постоянным клиентам</li>
+    </ul>
+  </section>
+
+  <!-- АКЦИЯ + ТАЙМЕР -->
+  <section class="section">
+    <div class="hazard">
+      <div class="hazard__title">
+        🚚 Бесплатная доставка до 400 км, если успеешь до <span id="deadline-label">05.10.2025</span>.
+        Иначе — компенсируем 10 000 ₽.
+      </div>
+    </div>
+    <div style="padding:10px 0 0">
+      <div id="countdown" style="font:700 22px Oswald;margin:10px 0">До конца акции: 00д 00ч 00м 00с</div>
+      <a class="btn btn--red" href="#lead">🔥 Зафиксировать доставку бесплатно</a>
+    </div>
+  </section>
+
+  <!-- ФИНАЛЬНАЯ ФОРМА -->
+  <section id="lead" class="section">
+    <h2>Оставьте заявку прямо сейчас</h2>
+    <p style="color:var(--muted)">Перезвоним в течение 10 минут и поможем выбрать УРАГАН.</p>
+    <form class="form" onsubmit="event.preventDefault(); alert('Заявка отправлена!');">
+      <div class="field">
+        <label>Имя</label>
+        <input class="input" type="text" placeholder="Ваше имя" required>
+      </div>
+      <div class="field">
+        <label>Телефон</label>
+        <input class="input" type="tel" placeholder="+7 (___) ___-__-__" required>
+      </div>
+      <button class="btn btn--green" type="submit">🚀 Забронировать УРАГАН</button>
+    </form>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="wrap section">
+  <div style="margin-bottom:6px">ИП Колосов Дмитрий Николаевич • ИНН 292004207002 • ОГРНИП 320352500027864</div>
+  <div><a href="#">Политика конфиденциальности</a> • <a href="#">Пользовательское соглашение</a></div>
+  <div style="margin-top:8px">Не является публичной офертой. Условия кредита зависят от банка-партнёра. Все изображения и характеристики носят справочный характер.</div>
+</footer>
+
+<!-- MODALS -->
+<div class="modal" id="modelUragan">
+  <div class="modal__box">
+    <button class="close" data-close>Закрыть ✕</button>
+    <div class="modal__grid">
+      <div>
+        <img src="MODEL_URAGAN_GALLERY_1.jpg" alt="" style="border-radius:10px;border:1px solid var(--line);margin-bottom:8px">
+        <img src="MODEL_URAGAN_GALLERY_2.jpg" alt="" style="border-radius:10px;border:1px solid var(--line)">
+      </div>
+      <div>
+        <h3 style="margin-top:0">УРАГАН — комплектация</h3>
+        <div class="price">от 330 000 ₽ <span class="credit">в кредит от 12 500 ₽/мес</span></div>
+        <ul style="padding-left:18px;color:var(--muted);margin:.5rem 0 1rem">
+          <li>Двигатель Lifan</li><li>Скорость до 45 км/ч (суша)</li><li>Плавает до 5 км/ч</li><li>Грузоподъёмность до 500 кг</li>
+        </ul>
+        <form class="form" onsubmit="event.preventDefault(); alert('Заявка отправлена!');">
+          <div class="field">
+            <label>Имя</label>
+            <input class="input" type="text" required placeholder="Ваше имя">
+          </div>
+          <div class="field">
+            <label>Телефон</label>
+            <input class="input" type="tel" required placeholder="+7 (___) ___-__-__">
+          </div>
+          <button class="btn btn--red" type="submit">🔥 Хочу этот УРАГАН</button>
+        </form>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px">Оплата при получении • Доставка по РФ • Гарантия 1 год</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modelComfort">
+  <div class="modal__box">
+    <button class="close" data-close>Закрыть ✕</button>
+    <div class="modal__grid">
+      <div>
+        <img src="MODEL_COMFORT_GALLERY_1.jpg" alt="" style="border-radius:10px;border:1px solid var(--line);margin-bottom:8px">
+        <img src="MODEL_COMFORT_GALLERY_2.jpg" alt="" style="border-radius:10px;border:1px solid var(--line)">
+      </div>
+      <div>
+        <h3 style="margin-top:0">УРАГАН Comfort — усиленная версия</h3>
+        <div class="price">от 380 000 ₽ <span class="credit">в кредит от 14 200 ₽/мес</span></div>
+        <ul style="padding-left:18px;color:var(--muted);margin:.5rem 0 1rem">
+          <li>Фары, улучшенное сиденье</li><li>Повышенный клиренс</li><li>Транспорт до 3 человек</li>
+        </ul>
+        <form class="form" onsubmit="event.preventDefault(); alert('Заявка отправлена!');">
+          <div class="field">
+            <label>Имя</label>
+            <input class="input" type="text" required placeholder="Ваше имя">
+          </div>
+          <div class="field">
+            <label>Телефон</label>
+            <input class="input" type="tel" required placeholder="+7 (___) ___-__-__">
+          </div>
+          <button class="btn btn--green" type="submit">⚡ Забронировать модель</button>
+        </form>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px">Оплата при получении • Доставка по РФ • Гарантия 1 год</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS: Swiper, VanillaTilt, Countdown, Modals -->
+<script src="https://unpkg.com/swiper@9/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<script>
+  // Карусель карточек (видна часть соседней карты)
+  const swiper = new Swiper('.swiper', {
+    slidesPerView: 1.15,
+    spaceBetween: 16,
+    centeredSlides: false,
+    breakpoints:{768:{slidesPerView:2.2},1024:{slidesPerView:3,spaceBetween:18}}
+  });
+
+  // Псевдо-3D tilt на Hero
+  VanillaTilt.init(document.querySelectorAll("#tilt .hero__tilt"), {
+    max: 8, perspective: 900, speed: 300, glare: true, "max-glare": .18, gyroscope: true
+  });
+
+  // Таймер обратного отсчёта (поставь свою дату)
+  const deadline = new Date('2025-10-05T23:59:59+03:00').getTime();
+  function tick(){
+    const t = deadline - Date.now();
+    const el = document.getElementById('countdown');
+    if(!el) return;
+    if(t<=0){ el.textContent = 'Акция завершена'; return;}
+    const d = Math.floor(t/86400000),
+          h = Math.floor((t%86400000)/3600000),
+          m = Math.floor((t%3600000)/60000),
+          s = Math.floor((t%60000)/1000);
+    el.textContent = `До конца акции: ${String(d).padStart(2,'0')}д ${String(h).padStart(2,'0')}ч ${String(m).padStart(2,'0')}м ${String(s).padStart(2,'0')}с`;
+    requestAnimationFrame(()=>setTimeout(tick,500));
+  } tick();
+
+  // Модалки
+  document.querySelectorAll('[data-modal]').forEach(btn=>{
+    btn.addEventListener('click',()=>{ document.querySelector(btn.dataset.modal).style.display='flex'; });
+  });
+  document.querySelectorAll('[data-close]').forEach(b=>{
+    b.addEventListener('click',()=> b.closest('.modal').style.display='none');
+  });
+  document.querySelectorAll('.modal').forEach(m=>{
+    m.addEventListener('click',e=>{ if(e.target===m) m.style.display='none' })
+  });
+</script>
+</body>
+</html>
